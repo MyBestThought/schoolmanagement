@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>学生列表</title>
+	<link rel="stylesheet" href="/css/dateTime.css">
+	<!-- 引入bootstrap -->
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.css}" rel="stylesheet">
+	<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+	<script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.js}"></script>
+	<script src="/js/dateTime.min.js"></script>
+	<script src="/js/distpicker.data.js"></script>
+	<script src="/js/distpicker.js"></script>
+	<!--		<script src="/js/main.js"></script>-->
+
+	<style>
+		.input-group, .input-group-md{
+			margin:20px 20px;
+		}
+		h2{
+			padding:5px;
+			border-bottom:1px solid #ddd;
+		}
+
+	</style>
+</head>
+<body>
+<!-- 导航 -->
+<div th:replace="commons/bar::topbar"></div>
+<!-- 主题内容 -->
+<!-- 主题内容 -->
+<div class="container-fluid">
+	<div class="page-main col-sm-8 col-sm-offset-1">
+		<div class="input-group">
+			<a th:href="@{/curriculum/curriculumList}"><label class="glyphicon glyphicon-chevron-left"></label>返回上页</a>
+		</div>
+		<form class="form-horizontal" th:action="@{/curriculum/addCurriculum}">
+
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">课程号</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="classNo">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">课程名</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="className">
+				</div>
+			</div>
+
+
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">上课教室</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="classRoom">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">课时</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="classHour">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label col-sm-offset-1">课程等级</label>
+				<!--下拉列表-->
+				<div class="col-sm-8">
+					<select class="form-control selectSubmit" style="display:block;height: 40px;font-size: 16px" name="classGrade">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6" selected>6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-1">
+					<button class="btn btn-info col-sm-3 col-sm-offset-6" type="submit">提交</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+</div>
+<div th:replace="commons/footer::footer"></div>
+</body>
+<script type="text/javascript">
+	$("#date").datetime({
+		type: "date",
+		value: [2019, 9, 31],
+		success: function(res) {
+			console.log(res)
+		}
+	})
+	var _distpicker = $('#distpicker');
+
+	_distpicker.distpicker({
+		province: '浙江省',
+		city: '杭州市',
+		district: '上城区'
+	});
+
+	$('#reset').click(function () {
+		_distpicker.distpicker('reset');
+	});
+</script>
+</html>

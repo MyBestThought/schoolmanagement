@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>学生列表</title>
+	<link rel="stylesheet" href="/css/dateTime.css">
+	<!-- 引入bootstrap -->
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.css}" rel="stylesheet">
+	<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+	<script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.js}"></script>
+	<!--		<script src="/js/main.js"></script>-->
+
+	<style>
+		.input-group, .input-group-md{
+			margin:20px 20px;
+		}
+		h2{
+			padding:5px;
+			border-bottom:1px solid #ddd;
+		}
+
+	</style>
+</head>
+<body>
+<!-- 导航 -->
+<div th:replace="commons/bar::topbar"></div>
+<!-- 主题内容 -->
+<div class="container-fluid">
+	<div class="page-main col-sm-8 col-sm-offset-1">
+		<div class="input-group">
+			<a th:href="@{/teacher/teacherList}"><label class="glyphicon glyphicon-chevron-left"></label>返回上页</a>
+		</div>
+		<form class="form-horizontal " th:action="@{/teacher/addTeacher}" method="post">
+
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">教工号</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="teacherNo" th:value="${teacher.teacherNo}">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">姓名</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="name" th:value="${teacher.name}">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">年龄</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="age"  th:value="${teacher.age}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label  col-sm-offset-1">性别</label>
+				<div class="col-sm-3">
+					<div class="radio">
+						<label>
+							<input type="radio" name="gender" value="0" th:checked="${teacher.gender == 0}"> 男
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="radio">
+						<label>
+							<input type="radio" name="gender" value="1"  th:checked="${teacher.gender == 1}"> 女
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">职称</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" id="date" name="professor"  th:value="${teacher.professor}">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">手机号</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="phone"  th:value="${teacher.phone}">
+				</div>
+			</div>
+			<div class="form-group" style="margin-top: 10px;">
+				<label class="col-sm-3 control-label col-sm-offset-1">邮箱</label>
+				<div class="col-sm-8 username-area">
+					<input type="text" class="form-control" name="email"  th:value="${teacher.email}">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-1">
+					<button type="submit" class="btn btn-info col-sm-3 col-sm-offset-6">提交</button>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+</div>
+<div th:replace="commons/footer::footer"></div>
+</body>
+<script type="text/javascript">
+	$("#date").datetime({
+		type: "date",
+		value: [2019, 9, 31],
+		success: function(res) {
+			console.log(res)
+		}
+	})
+	var _distpicker = $('#distpicker');
+
+	_distpicker.distpicker({
+		province: '浙江省',
+		city: '杭州市',
+		district: '上城区'
+	});
+
+	$('#reset').click(function () {
+		_distpicker.distpicker('reset');
+	});
+</script>
+</html>

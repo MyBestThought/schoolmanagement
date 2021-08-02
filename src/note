@@ -1,0 +1,2 @@
+Field peopleMapper in com.yht.service.impl.UserSerivceImpl required a bean of type 'com.yht.dao.PeopleMapper' that could not be found.
+原因：

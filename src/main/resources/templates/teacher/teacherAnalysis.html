@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>教师分析</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.css}" rel="stylesheet">
+		<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+		<script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.js}"></script>
+		<script th:src="@{/webjars/echarts/4.7.0/dist/echarts.js}"></script>
+	</head>
+	<body>
+		<!-- 导航 -->
+		<div th:replace="commons/bar::topbar"></div>
+		<!-- 主题内容 -->
+		<div class="container-fluid">
+			<div class="page-main">
+				<ol class="breadcrumb">
+					<li>教师风采</li>
+					<li>教师分析</li>
+				</ol>
+				<div class="row">
+					<div class="">
+						<div id="leftGraph" style="height: 400px" class="col-sm-5 col-sm-offset-1"></div>
+						<div id="rightGraph" style="height: 400px" class="col-sm-5 col-sm-offset-1"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</div>
+		<div th:replace="commons/footer::footer"></div>
+	</body>
+`
+	<script type="text/javascript">
+		$(function () {
+			$.ajax({
+				type : "get",   //请求方式
+				url : "http://localhost:8082/takeClassCount",  //后端controller层路径
+				contentType: 'application/json',
+				success:function(data){
+					console.log(data)
+					console.log(data.names);
+					console.log(data.counts);
+					var leftDom = document.getElementById("leftGraph");
+					var leftChart = echarts.init(leftDom);
+					var leftOption;
+					leftOption = {
+						title : {
+							show:true,//显示策略，默认值true,可选为：true（显示） | false（隐藏）
+							text: '教师带课',
+						},
+						xAxis: {
+							type: 'category',
+							data: data.names
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [{
+							data: data.counts,
+							type: 'bar',
+							showBackground: true,
+							backgroundStyle: {
+								color: 'rgba(43, 114, 180, 0.2)'
+							}
+						}]
+					};
+					if (leftOption && typeof leftOption === 'object') {
+						leftChart.setOption(leftOption);
+					}
+				},
+				error:function(data){
+					console.log("error")
+					console.log(data)
+				}
+			})
+			$.ajax({
+				type : "get",   //请求方式
+				url : "http://localhost:8082/teacherAge",  //后端controller层路径
+				contentType: 'application/json',
+				success:function(data){
+					console.log(data)
+					var arr = [];
+					for(var i=0; i < data.ageRanges.length; i++){
+						arr.push({"value":data.ageCounts[i], "name":data.ageRanges[i]});
+					}
+					console.log(arr);
+					var rightDom = document.getElementById("rightGraph");
+					var rightChart = echarts.init(rightDom);
+
+					var rightOption;
+					rightOption = {
+						title: {
+							text: '教师年龄范围',
+							left: 'center'
+						},
+						tooltip: {
+							trigger: 'item'
+						},
+						legend: {
+							orient: 'vertical',
+							left: 'left',
+						},
+						series: [
+							{
+								name: '访问来源',
+								type: 'pie',
+								radius: '50%',
+								data:arr,
+								emphasis: {
+									itemStyle: {
+										shadowBlur: 10,
+										shadowOffsetX: 0,
+										shadowColor: 'rgba(0, 0, 0, 0.5)'
+									}
+								}
+							}
+						]
+					};
+
+					if (rightOption && typeof rightOption === 'object') {
+						rightChart.setOption(rightOption);
+					}
+				},
+				error:function(data){
+					console.log("error")
+					console.log(data)
+				}
+
+
+			})
+		});
+
+		
+
+	</script>
+</html>

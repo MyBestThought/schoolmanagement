@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>学生列表</title>
+		<!-- 引入bootstrap -->
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.css}" rel="stylesheet">
+		<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+
+		<script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.js}"></script>
+		<style>
+		
+		
+		</style>
+	</head>
+	<body>
+		<div th:replace="commons/bar::topbar"></div>
+		<!-- 主题内容 -->
+		<div class="container-fluid">
+			<div class="page-main">
+				<ol class="breadcrumb">
+					<li>课程信息</li>
+					<li>课程列表</li>
+				</ol>
+				<form class="form-inline" th:action="@{/curriculum/searchByCodition}" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="请输入课程号" name="searchClassNo">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="请输入课程名" name="searchClassName">
+					</div>
+					<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+				</form>
+				<hr>
+				<div class="text-center" style="display:block;margin-bottom: 20px;">
+					<a class="btn btn-primary col-sm-1" style="margin-right:10px" th:href="@{/user/toPage(url='/curriculum/addCurriculum')}"><span class="glyphicon glyphicon-plus" style="margin-right: 10px;"></span>添加</a>
+					<a class="btn btn-warning col-sm-1" th:href="@{/curriculum/exportCurriculumData}"><span class="glyphicon glyphicon-upload" style="margin-right: 10px;"></span>导出</a>
+					<label class="pull-right" style="margin-right:20px"  th:if="${curriculumList != null}">[[${page.total}]]</label>
+
+				</div>
+				<div th:if="${not #strings.isEmpty(msg)}"  class="alert alert-danger" role="alert" style="width: 300px;margin:20px auto">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong th:text="${msg}">Warning!</strong>
+				</div>
+				<table class="table table-striped table-bordered text-center" style="margin-top:80px"  th:if="${curriculumList != null}">
+					<thead>
+					<tr>
+						<th class="text-center">课程号</th>
+						<th class="text-center">课程名</th>
+						<th class="text-center">上课教室</th>
+						<th class="text-center">课时</th>
+						<th class="text-center">课程等级</th>
+						<th class="text-center">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+
+					<tr th:each="curriculum : ${curriculumList}">
+						<td th:text="${curriculum.classNo}"></td>
+						<td th:text="${curriculum.className}"></td>
+						<td th:text="${curriculum.classRoom}"></td>
+						<td th:text="${curriculum.classHour}"></td>
+						<td th:text="${curriculum.classGrade}"></td>
+						<td>
+							<a th:href="@{/curriculum/curriculumDetail(id=${curriculum.id})}"><span class="glyphicon glyphicon-pencil"
+											 style="margin-right:10px"></span></a>
+							<a th:href="@{/curriculum/deleteCurriculum(id=${curriculum.id})}"><span class="glyphicon glyphicon-trash"></span></a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<div class="row text-center" th:if="${curriculumList != null}">
+					<div class="col-sm-6 col-sm-offset-2">
+						<ul class="pagination">
+							<li><a th:href="@{/curriculum/curriculumList(start = 0)}" aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+							<li th:each="number:${#numbers.sequence(1,page.totalPage)}"><a th:href="@{/curriculum/curriculumList(start=${(number-1)*page.count})}" th:text="${number}"></a></li>
+							<li><a  th:href="@{/curriculum/curriculumList(start=${page.last})}" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		</div>
+		<div th:replace="commons/footer::footer"></div>
+	</body>
+</html>

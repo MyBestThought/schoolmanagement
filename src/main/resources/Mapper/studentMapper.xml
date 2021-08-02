@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.yht.dao.IStudentDao">
+    <resultMap id="BaseResultMap" type="com.yht.entity.Student">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="stuNo" jdbcType="VARCHAR" property="stuNo" />
+        <result column="gender" jdbcType="INTEGER" property="gender" />
+        <result column="classNo" jdbcType="VARCHAR" property="classNo" />
+        <result column="birth" jdbcType="DATE" property="birth" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,  icon, stuNo, name, gender, classNo, birth, phone, email, address
+    </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_student
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_student where id = #{id}
+    </select>
+    <select id="selectClassCount" parameterType="String" resultType="String">
+        select classNo from t_studentclass where stuNo = #{stuNo};
+    </select>
+    <select id="">
+
+    </select>
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List" />
+        from t_student where  1 = 1
+        <if test="name != null and name != '' ">
+            and name like #{name}
+        </if>
+        <if test="stuNo != null and stuNo != '' " >
+           and  stuNo = #{stuNo}
+        </if>
+        <if test="classNo != null and classNo != '' ">
+            and classNo = #{classNo}
+        </if>
+    </select>
+   <insert id="insertStudent" parameterType="com.yht.entity.Student">
+       insert into t_student
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+           <if test="icon != null">
+               icon,
+           </if>
+           <if test="stuNo != null">
+               stuNo,
+           </if>
+           <if test="name != null">
+                name,
+            </if>
+           <if test="gender != null">
+               gender,
+           </if>
+           <if test="classNo != null">
+               classNo,
+           </if>
+           <if test="birth != null">
+               birth,
+           </if>
+           <if test="phone != null">
+               phone,
+           </if>
+           <if test="email != null">
+               email,
+           </if>
+
+           <if test="address != null">
+               address,
+           </if>
+       </trim>
+       <trim prefix="values (" suffix=")" suffixOverrides=",">
+           <if test="icon != null">
+               #{icon,jdbcType=VARCHAR},
+           </if>
+           <if test="stuNo != null">
+               #{stuNo,jdbcType=VARCHAR},
+           </if>
+
+           <if test="name != null">
+               #{name,jdbcType=VARCHAR},
+           </if>
+           <if test="gender != null">
+               #{gender,jdbcType=INTEGER},
+           </if>
+           <if test="classNo != null">
+               #{classNo,jdbcType=VARCHAR},
+           </if>
+           <if test="birth != null">
+               #{birth,jdbcType=DATE},
+           </if>
+           <if test="phone != null">
+               #{phone,jdbcType=VARCHAR},
+           </if>
+           <if test="email != null">
+               #{email,jdbcType=VARCHAR},
+           </if>
+
+           <if test="address != null">
+               #{address,jdbcType=VARCHAR},
+           </if>
+       </trim>
+   </insert>
+    <update id="updateStudent" parameterType="com.yht.entity.Student">
+        update t_student
+        <set>
+            <if test="icon != null">
+                 icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="stuNo != null">
+                stuNo = #{stuNo,jdbcType=VARCHAR},
+            </if>
+
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="classNo != null">
+                classNo = #{classNo,jdbcType=VARCHAR},
+            </if>
+            <if test="birth != null">
+                birth = #{birth,jdbcType=DATE},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from t_student  where id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

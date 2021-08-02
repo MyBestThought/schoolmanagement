@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.yht.dao.ICurriculumDao">
+    <resultMap id="BaseResultMap" type="com.yht.entity.Curriculum">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="classNo" jdbcType="VARCHAR" property="classNo" />
+        <result column="className" jdbcType="VARCHAR" property="className" />
+        <result column="classRoom" jdbcType="VARCHAR" property="classRoom" />
+        <result column="classHour" jdbcType="INTEGER" property="classHour" />
+        <result column="classGrade" jdbcType="INTEGER" property="classGrade" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,  classNo, className, classRoom, classHour, classGrade
+    </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_curriculum
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_curriculum where id = #{id}
+    </select>
+    <select id="selectByCurriculumNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_curriculum where classNo = #{classNo}
+    </select>
+    <select id="selectByStuNo" resultMap="BaseResultMap" parameterType="String">
+        select c.* from t_curriculum c, t_studentclass sc
+        where c.classNo = sc.classNo and sc.stuNo =#{stuNo}
+    </select>
+    <select id="selectByTeacherNo" resultMap="BaseResultMap" parameterType="String">
+        select c.* from t_curriculum c, t_teacherclass tc
+        where  c.classNo = tc.classNo and tc.teacherNo = #{teacherNo}
+    </select>
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List" />
+        from t_curriculum where  1 = 1
+        <if test="className != null and className != '' ">
+            and className like #{className}
+        </if>
+        <if test="classNo != null and classNo != '' ">
+            and classNo = #{classNo}
+        </if>
+    </select>
+    <insert id="insertCurriculum" parameterType="com.yht.entity.Curriculum">
+        insert into t_curriculum
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classNo != null">
+                classNo,
+            </if>
+            <if test="className != null">
+                className,
+            </if>
+            <if test="classRoom != null">
+                classRoom,
+            </if>
+            <if test="classHour != null">
+                classHour,
+            </if>
+            <if test="classGrade != null">
+                classGrade,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classNo != null">
+                #{classNo,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="classRoom != null">
+                #{classRoom,jdbcType=VARCHAR},
+            </if>
+            <if test="classHour != null">
+                #{classHour,jdbcType=INTEGER},
+            </if>
+            <if test="classGrade != null">
+                #{classGrade,jdbcType=INTEGER},
+            </if>
+
+        </trim>
+    </insert>
+    <update id="updateCurriculum" parameterType="com.yht.entity.Curriculum">
+        update t_curriculum
+        <set>
+            <if test="classNo != null">
+                classNo = #{classNo,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                className = #{className,jdbcType=VARCHAR},
+            </if>
+
+            <if test="classRoom != null">
+                classRoom = #{classRoom,jdbcType=VARCHAR},
+            </if>
+            <if test="classHour != null">
+                classHour = #{classHour,jdbcType=INTEGER},
+            </if>
+            <if test="classGrade != null">
+                classGrade = #{classGrade,jdbcType=INTEGER},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from t_curriculum  where id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>
