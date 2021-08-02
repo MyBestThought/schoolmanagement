@@ -103,6 +103,10 @@ public class ClassController {
             //得到满足条件的集合
             List<ClassEntity> classEntityList = classService.selectByCondition(searchMajor, searchClassNo);
             if(classEntityList.size() > 0){
+                //得到班级人数
+                for(ClassEntity classEntity : classEntityList){
+                    classEntity.setStuCount(studentService.selectByCondition("","", classEntity.getClassNo()).size());
+                }
                 PageHelper.offsetPage(page.getStart(),page.getCount());
                 int total = (int) new PageInfo<>(classEntityList).getTotal();
                 page.setTotal(total);

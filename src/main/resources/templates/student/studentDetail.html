@@ -85,8 +85,7 @@
 						<!--下拉列表-->
 						<div class="col-sm-8">
 							<select class="form-control selectSubmit" style="display:block;height: 40px;font-size: 16px" name="classNo">
-								<option th:selected="${student.classNo=='1001'}">1001</option>
-								<option th:selected="${student.classNo=='1002'}">1002</option>
+								<option th:each="class : ${classEntityList}" th:value="${class.classNo}" th:text="${class.classNo}">1001</option>
 							</select>
 						</div>
 					</div>

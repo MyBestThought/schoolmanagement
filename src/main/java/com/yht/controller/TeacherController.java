@@ -153,6 +153,10 @@ public class TeacherController {
             List<Teacher> teacherList = teacherService.selectByCondition(searchName, searchTeacherNo, searchProfessor);
             //判断结果集是否为0
             if(teacherList.size() > 0){
+                //查询教师带课数量
+                for(Teacher teacher : teacherList){
+                    teacher.setClassCount(curriculumService.selectByTeacherNo(teacher.getTeacherNo()).size());
+                }
                 PageHelper.offsetPage(page.getStart(),page.getCount());
                 int total = (int) new PageInfo<>(teacherList).getTotal();
                 page.setTotal(total);

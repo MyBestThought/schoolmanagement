@@ -90,6 +90,8 @@ public class StudentController {
     public String studentDetail(Integer id, Model model){
         //根据id查询到学生信息
         Student student = studentService.selectById(id);
+        List<ClassEntity> classEntityList = classService.selectAll();
+        model.addAttribute("classEntityList", classEntityList);
         //将数据返回到页面
         model.addAttribute("student", student);
         return "/student/studentDetail";
@@ -119,6 +121,11 @@ public class StudentController {
             List<Student> studentList = studentService.selectByCondition(searchName, searchStuNo, searchClassNo);
             //查询结果为空，页面显示提示信息。不为空，则显示记录
             if(studentList.size() > 0){
+                //根据学号得到每个学生的选课数
+                for (Student student : studentList){
+                    List<String> stringList = studentService.selectClassCount(student.getStuNo());
+                    student.setClassCount(stringList.size());
+                }
                 PageHelper.offsetPage(page.getStart(),page.getCount());
                 int total = (int) new PageInfo<>(studentList).getTotal();
                 page.setTotal(total);
